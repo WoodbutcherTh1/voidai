@@ -119,16 +119,16 @@ Tech Stack
 </div>
 <br/>
 Getting Started
-# Clone the repository
-git clone https://github.com/yourusername/voidai.git
-# Navigate to project
-cd voidai
-# Install dependencies
-npm install
-# Set up environment variables
-cp .env.example .env.local
-# Run development server
-npm run dev
+1 . # Clone the repository
+~ git clone https://github.com/WoodbutcherTh1/voidai.git     ==> 
+# Navigate to project        ==>
+~ cd voidai
+# Install dependencies       ==> 
+~ npm install
+# Set up environment variables   ==>
+~ cp .env.example .env.local
+# Run development server   ==>
+~ npm run dev
 Open http://localhost:3000 — enter your API key — and step into the Void.
 <br/>
 Environment Variables
