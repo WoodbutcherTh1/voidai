@@ -22,7 +22,7 @@ VoidAI is a modern multilingual AI chat app built with Next.js and OpenRouter.
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/yourusername/voidai.git
+git clone https://github.com/WoodbutcherTh1/voidai.git
 cd voidai
 npm install
 npm run dev
