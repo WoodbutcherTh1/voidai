@@ -1,26 +1,50 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  --void-bg: radial-gradient(circle at 20% 20%, #0b0f1a, #020617 60%);
+  --void-text: #e2e8f0;
+  --void-text-muted: #94a3b8;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* 🔥 VOID CUSTOM COLOR (خاص فيك) */
+  --void-accent: #5b21b6; /* deep purple */
+  --void-accent-glow: #7c3aed;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --void-glass: rgba(255, 255, 255, 0.05);
+  --void-border: rgba(255, 255, 255, 0.08);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--void-bg);
+  color: var(--void-text);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #5b21b6, #7c3aed);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.4);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(124, 58, 237, 0.7);
+}
+.btn-secondary,
+.input-field {
+  background: var(--void-glass);
+  color: var(--void-text);
+  border: 1px solid var(--void-border);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  backdrop-filter: blur(12px);
+}
+
+.chat-box {
+  background: rgba(2, 6, 23, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--void-border);
+  border-radius: 1rem;
 }
