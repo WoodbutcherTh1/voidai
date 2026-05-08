@@ -1,25 +1,66 @@
 # 🤖 VoidAI
 
-VoidAI is a modern multilingual AI chat app built with Next.js and OpenRouter.
+VoidAI is a modern AI workspace built with Next.js, TypeScript, and OpenRouter.
+
+A sleek multilingual AI interface inspired by modern productivity and chat apps, designed for chatting, development workflows, media tools, and future AI utilities.
+
+---
 
 ## ✨ Features
 
-- 🌍 Multilingual AI replies
-- 🧠 Language memory
-- 🎭 Personality system prompt
-- 😊 Emoji picker
-- 💬 Real-time chat UI
+### Core AI
+- 💬 Real-time AI chat
 - ⚡ Streaming responses
-- 📜 Auto scroll
+- 🌍 Multilingual replies
+- 🧠 Language memory
+- 🎭 Personality system prompts
 
-## 🚀 Tech Stack
+### UI / UX
+- 📱 Responsive design
+- 🧭 Sidebar navigation
+- 🔻 Bottom navigation
+- 😊 Emoji picker
+- 📜 Auto-scroll chat
+- ⌨️ Keyboard shortcuts
 
-- Next.js
+### App Sections
+- 💬 Chat workspace
+- 👨‍💻 Dev tools page
+- 🎵 Music page
+- 🎬 Media page
+- 🤖 Android tools page
+
+---
+
+## 🛠 Tech Stack
+
+- Next.js 15
+- React
 - TypeScript
 - Tailwind CSS
 - OpenRouter API
 
-## 📦 Installation
+---
+
+## 📂 Project Structure
+
+```bash
+app/
+├── (app)/
+│   ├── android/
+│   ├── chat/
+│   ├── dev/
+│   ├── media/
+│   └── music/
+├── api/
+│   └── chat/
+├── components/
+└── globals.css
+```
+
+---
+
+## 🚀 Installation
 
 ```bash
 git clone https://github.com/WoodbutcherTh1/voidai.git
@@ -28,11 +69,13 @@ npm install
 npm run dev
 ```
 
-Open:
+Open locally:
 
 ```bash
 http://localhost:3000
 ```
+
+---
 
 ## 🔑 Environment Variables
 
@@ -42,25 +85,40 @@ Create `.env.local`
 OPENROUTER_API_KEY=your_api_key_here
 ```
 
-## 🛣️ Roadmap
+---
 
-- [x] Chat UI
-- [x] Emoji picker
-- [x] Streaming responses
+## 🗺 Roadmap
+
+### Completed
+- [x] Chat interface
+- [x] Streaming AI responses
+- [x] Sidebar navigation
+- [x] Bottom navigation
+- [x] Emoji support
+- [x] Multilingual chat
+
+### In Progress
 - [ ] Typing indicator
-- [ ] Memory system
 - [ ] Chat history
+- [ ] Persistent memory
+- [ ] Theme system
 - [ ] Voice input
-- [ ] Themes
-- [ ] Sidebar motivation
+- [ ] Authentication
+
+---
 
 ## 📸 Preview
 
-Coming soon...
+Coming soon.
 
-## 🧑‍💻 Author
+---
 
-Ameen AB V Hammam K
+## 👨‍💻 Authors
+
+- Ameen
+- Hammam
+
+---
 
 ## 📄 License
 
