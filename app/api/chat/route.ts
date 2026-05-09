@@ -86,9 +86,17 @@ Style:
 
 export async function POST(req: Request) {
   try {
-    if (!OPENROUTER_API_KEY) {
+    if (!OPENROUTER_API_KEY || OPENROUTER_API_KEY.trim() === "") {
+      console.error(
+        "[chat] OPENROUTER_API_KEY is missing. " +
+          "Set it in .env (local) or pass via docker-compose env_file."
+      );
       return NextResponse.json(
-        { error: "Missing OPENROUTER_API_KEY" },
+        {
+          error:
+            "Server is missing OPENROUTER_API_KEY. " +
+            "Add it to your .env file and restart the server.",
+        },
         { status: 500 }
       );
     }
@@ -114,7 +122,7 @@ export async function POST(req: Request) {
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+          Authorization: `Bearer ${OPENROUTER_API_KEY.trim()}`,
           "Content-Type": "application/json",
           "HTTP-Referer": "http://localhost:3000",
           "X-Title": "VoidAI",
@@ -134,9 +142,17 @@ export async function POST(req: Request) {
 
     if (!response.ok) {
       const errorText = await response.text();
+      console.error("[chat] OpenRouter error:", response.status, errorText);
+
+      let friendly = errorText;
+      if (response.status === 401) {
+        friendly =
+          "OpenRouter rejected the API key. " +
+          "Verify OPENROUTER_API_KEY in .env and restart the server.";
+      }
 
       return NextResponse.json(
-        { error: errorText },
+        { error: friendly },
         { status: response.status }
       );
     }

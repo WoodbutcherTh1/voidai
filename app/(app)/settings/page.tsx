@@ -25,7 +25,7 @@ const THEMES = [
 
 export default function SettingsPage() {
   const { theme, setTheme } = useTheme();
-  const [apiKeys, setApiKeys] = useState<Record<string, string>>({});
+  const [keys, setKeys] = useState<Record<string, string>>({});
   const [activeProvider, setActiveProvider] = useState<string>("openai");
   const [language, setLanguage] = useState<string>("en");
   const [showKey, setShowKey] = useState<Record<string, boolean>>({});
@@ -33,7 +33,7 @@ export default function SettingsPage() {
   // Load stored API keys and language on mount
   useEffect(() => {
     const storedKeys = getApiKeys();
-    setApiKeys(storedKeys);
+    setKeys(storedKeys);
     const savedLang = localStorage.getItem("voidai_language");
     if (savedLang) setLanguage(savedLang);
   }, []);
@@ -44,11 +44,11 @@ export default function SettingsPage() {
   }, [language]);
 
   const handleKeyChange = (provider: string, value: string) => {
-    setApiKeys((prev) => ({ ...prev, [provider]: value }));
+    setKeys((prev) => ({ ...prev, [provider]: value }));
   };
 
   const handleSave = (provider: string) => {
-    const key = apiKeys[provider] ?? "";
+    const key = keys[provider] ?? "";
     if (key.trim()) {
       setApiKey(provider, key.trim());
       alert(`${provider} API key saved to local storage!`);
@@ -60,7 +60,7 @@ export default function SettingsPage() {
   const handleDelete = (provider: string) => {
     if (confirm(`Are you sure you want to delete the ${provider} API key?`)) {
       removeApiKey(provider);
-      setApiKeys((prev) => {
+      setKeys((prev) => {
         const updated = { ...prev };
         delete updated[provider];
         return updated;
@@ -72,7 +72,7 @@ export default function SettingsPage() {
   const handleClearAll = () => {
     if (confirm("Are you sure you want to delete all API keys?")) {
       clearApiKeys();
-      setApiKeys({});
+      setKeys({});
       alert("All API keys cleared from local storage!");
     }
   };
@@ -82,12 +82,12 @@ export default function SettingsPage() {
   };
 
   const copyToClipboard = async (providerId: string) => {
-    const key = apiKeys[providerId];
+    const key = keys[providerId];
     if (key) {
       try {
         await navigator.clipboard.writeText(key);
         alert("API key copied to clipboard!");
-      } catch (err) {
+      } catch {
         alert("Failed to copy API key to clipboard.");
       }
     }
@@ -96,10 +96,15 @@ export default function SettingsPage() {
   return (
     <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">Settings</h1>
+        <header className="mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight">Settings</h1>
+          <p className="mt-1 text-sm text-void-text-muted">
+            Customize your VoidAI workspace
+          </p>
+        </header>
 
         {/* API Keys Section */}
-        <section className="bg-void-light rounded-xl border border-void-lighter p-6 mb-6">
+        <section className="glass rounded-2xl p-6 mb-6">
           <h2 className="text-xl font-semibold mb-4">API Key Management</h2>
           <p className="text-void-text-muted mb-6">
             Store your AI provider API keys locally in your browser. Keys are never sent to our servers.
@@ -118,7 +123,7 @@ export default function SettingsPage() {
             >
               {PROVIDERS.map((provider) => (
                 <option key={provider.id} value={provider.id}>
-                  {provider.label} {apiKeys[provider.id] ? "(Saved)" : ""}
+                  {provider.label} {keys[provider.id] ? "(Saved)" : ""}
                 </option>
               ))}
             </select>
@@ -135,7 +140,7 @@ export default function SettingsPage() {
                   <input
                     id={`${provider.id}-key`}
                     type={showKey[provider.id] ? "text" : "password"}
-                    value={apiKeys[provider.id] ?? ""}
+                    value={keys[provider.id] ?? ""}
                     onChange={(e) => handleKeyChange(provider.id, e.target.value)}
                     placeholder="Enter API key (e.g., sk-...)"
                     className="input-field flex-1 min-w-[200px]"
@@ -157,15 +162,15 @@ export default function SettingsPage() {
                 </div>
 
                 {/* Masked Key Display with Show/Hide and Copy */}
-                {apiKeys[provider.id] && (
+                {keys[provider.id] && (
                   <div className="mt-2 flex items-center gap-2 flex-wrap">
                     <p className="text-sm text-void-text-muted">
                       Stored key:{" "}
                       <span className="font-mono">
-                        {showKey[provider.id] 
-                          ? apiKeys[provider.id] 
-                          : (apiKeys[provider.id]?.length ?? 0) >= 4
-                            ? `${apiKeys[provider.id]!.slice(0, 4)}••••••••`
+                        {showKey[provider.id]
+                          ? keys[provider.id]
+                          : (keys[provider.id]?.length ?? 0) >= 4
+                            ? `${keys[provider.id]!.slice(0, 4)}••••••••`
                             : "••••••••"}
                       </span>
                     </p>
@@ -195,7 +200,7 @@ export default function SettingsPage() {
         </section>
 
         {/* Theme Section */}
-        <section className="bg-void-light rounded-xl border border-void-lighter p-6 mb-6">
+        <section className="glass rounded-2xl p-6 mb-6">
           <h2 className="text-xl font-semibold mb-4">Theme Settings</h2>
           <p className="text-void-text-muted mb-2">
             Current theme: <span className="font-medium text-void-text">{theme}</span>
@@ -226,7 +231,7 @@ export default function SettingsPage() {
         </section>
 
         {/* Language Section (Placeholder) */}
-        <section className="bg-void-light rounded-xl border border-void-lighter p-6">
+        <section className="glass rounded-2xl p-6">
           <h2 className="text-xl font-semibold mb-4">Language Preferences</h2>
           <p className="text-void-text-muted mb-4">
             Select your preferred language (placeholder - full localization coming soon)
