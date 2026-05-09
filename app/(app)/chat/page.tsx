@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Button from "@/app/components/ui/button";
+import { getPreferredLanguageLabel } from "@/app/lib/preferences";
 
 interface Message {
   id: number;
@@ -75,7 +76,7 @@ export default function ChatPage() {
             })),
             { role: "user", content: trimmed },
           ],
-          preferredLanguage: "English",
+          preferredLanguage: getPreferredLanguageLabel(),
         }),
       });
 

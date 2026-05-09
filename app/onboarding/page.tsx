@@ -1,10 +1,19 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useTheme } from "../components/ThemeProvider";
+import { useTheme, type ThemeName } from "../components/ThemeProvider";
 import Button from "@/app/components/ui/button";
 
-const themes = [
+type ThemeOption = {
+  name: string;
+  value: ThemeName;
+  bg: string;
+  light: string;
+  accent: string;
+  description: string;
+};
+
+const themes: ThemeOption[] = [
   {
     name: "Void Dark",
     value: "dark",
@@ -59,7 +68,7 @@ export default function OnboardingPage() {
   const router = useRouter();
   const { setTheme } = useTheme();
 
-  const handleThemeSelect = (themeValue: string) => {
+  const handleThemeSelect = (themeValue: ThemeName) => {
     setTheme(themeValue);
     router.push("/login");
   };
