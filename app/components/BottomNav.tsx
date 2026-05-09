@@ -1,13 +1,35 @@
 'use client'
 
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+
+const links = [
+  { href: '/chat', label: 'Chat' },
+  { href: '/dev', label: 'Dev' },
+  { href: '/media', label: 'Media' },
+  { href: '/vault', label: 'Vault' },
+  { href: '/settings', label: 'Settings' },
+]
 
 export default function BottomNav() {
+  const pathname = usePathname()
+
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-800 flex justify-around p-3 md:hidden">
-      <Link href="/chat">Chat</Link>
-      <Link href="/dev">Dev</Link>
-      <Link href="/settings">Settings</Link>
+    <nav className="bg-void-light border-t border-void-lighter flex justify-around p-3">
+      {links.map((link) => {
+        const active = pathname === link.href
+        return (
+          <Link
+            key={link.href}
+            href={link.href}
+            className={`text-sm px-2 py-1 rounded transition ${
+              active ? 'text-void-accent font-semibold' : 'text-void-text-muted'
+            }`}
+          >
+            {link.label}
+          </Link>
+        )
+      })}
     </nav>
   )
 }

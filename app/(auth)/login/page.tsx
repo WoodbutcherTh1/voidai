@@ -2,12 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useTheme } from "@/app/components/ThemeProvider";
 import Button from "@/app/components/ui/button";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { setTheme } = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -20,14 +18,14 @@ export default function LoginPage() {
 
     try {
       // TODO: Implement actual authentication logic
-      console.log("Login attempt:", { email, password });
-      
+      console.log("Login attempt:", { email });
+
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // For now, just redirect to chat
       router.push("/chat");
-    } catch (err) {
+    } catch {
       setError("Invalid email or password");
     } finally {
       setLoading(false);
@@ -41,7 +39,9 @@ export default function LoginPage() {
         {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium mb-1">Email</label>
+            <label htmlFor="email" className="block text-sm font-medium mb-1">
+              Email
+            </label>
             <input
               id="email"
               type="email"
@@ -53,7 +53,9 @@ export default function LoginPage() {
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium mb-1">Password</label>
+            <label htmlFor="password" className="block text-sm font-medium mb-1">
+              Password
+            </label>
             <input
               id="password"
               type="password"
@@ -64,17 +66,15 @@ export default function LoginPage() {
               required
             />
           </div>
-          <Button
-            type="submit"
-            disabled={loading}
-            className="w-full"
-            variant="primary"
-          >
+          <Button type="submit" disabled={loading} className="w-full" variant="primary">
             {loading ? "Logging in..." : "Login"}
           </Button>
         </form>
         <p className="mt-4 text-center text-void-text-muted">
-          Don't have an account? <a href="/auth/register" className="text-void-accent hover:underline">Register</a>
+          Don&apos;t have an account?{" "}
+          <a href="/register" className="text-void-accent hover:underline">
+            Register
+          </a>
         </p>
       </div>
     </div>

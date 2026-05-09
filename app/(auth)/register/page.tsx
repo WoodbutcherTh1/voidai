@@ -1,196 +1,101 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Button from "@/app/components/ui/button";
-import EmojiPicker from "emoji-picker-react";
 
-interface Message {
-  id: number;
-  content: string;
-  sender: "user" | "ai";
-  timestamp: Date;
-}
-
-export default function ChatPage() {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: 1,
-      content: "Hey 😏 tell me what’s on your mind.",
-      sender: "ai",
-      timestamp: new Date(),
-    },
-  ]);
-
-  const [inputValue, setInputValue] = useState("");
+export default function RegisterPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showEmoji, setShowEmoji] = useState(false);
+  const [error, setError] = useState("");
 
-  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
 
-  // 🔥 AUTO SCROLL
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters.");
+      return;
+    }
+    if (password !== confirm) {
+      setError("Passwords do not match.");
+      return;
+    }
 
-  const handleSendMessage = async () => {
-    const trimmed = inputValue.trim();
-    if (!trimmed) return;
-
-    const userMsg: Message = {
-      id: Date.now(),
-      content: trimmed,
-      sender: "user",
-      timestamp: new Date(),
-    };
-
-    setMessages((prev) => [...prev, userMsg]);
-    setInputValue("");
     setLoading(true);
-
     try {
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          messages: [
-            ...messages.map((m) => ({
-              role: m.sender === "user" ? "user" : "assistant",
-              content: m.content,
-            })),
-            { role: "user", content: trimmed },
-          ],
-          preferredLanguage: localStorage.getItem("preferredLanguage"),
-        }),
-      });
-
-      const data = await response.json();
-
-      // 🔥 SAVE LANGUAGE
-      if (data.preferredLanguage) {
-        localStorage.setItem("preferredLanguage", data.preferredLanguage);
-      }
-
-      const aiMsg: Message = {
-        id: Date.now() + 1,
-        content:
-          data.reply || data.error || "Something went wrong 😕",
-        sender: "ai",
-        timestamp: new Date(),
-      };
-
-      setMessages((prev) => [...prev, aiMsg]);
-    } catch (err) {
-      console.error(err);
-
-      const errorMsg: Message = {
-        id: Date.now() + 1,
-        content: "Connection issue 🚫 try again.",
-        sender: "ai",
-        timestamp: new Date(),
-      };
-
-      setMessages((prev) => [...prev, errorMsg]);
+      // TODO: Implement actual registration logic
+      console.log("Register attempt:", { email });
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      router.push("/chat");
+    } catch {
+      setError("Could not create account.");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && !loading) {
-      handleSendMessage();
-    }
-  };
-
   return (
-    <div className="min-h-screen p-4 md:p-8 flex flex-col">
-      <div className="max-w-4xl mx-auto w-full flex flex-col flex-1">
-
-        <h1 className="text-3xl font-bold mb-6">VoidAI</h1>
-
-        <div className="chat-box p-6 flex flex-col flex-1">
-
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto space-y-4 mb-4 pr-1">
-            {messages.map((msg) => (
-              <div
-                key={msg.id}
-                className={`flex ${
-                  msg.sender === "user"
-                    ? "justify-end"
-                    : "justify-start"
-                }`}
-              >
-                <div
-                  className={`max-w-[70%] rounded-xl px-4 py-3 ${
-                    msg.sender === "user"
-                      ? "bg-[linear-gradient(135deg,#5b21b6,#7c3aed)] text-white shadow-lg"
-                      : "message-ai"
-                  }`}
-                >
-                  <p className="text-sm md:text-base">
-                    {msg.content}
-                  </p>
-
-                  <span className="text-xs mt-1 block opacity-70">
-                    {msg.timestamp.toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </span>
-                </div>
-              </div>
-            ))}
-
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Emoji */}
-          <div className="relative mb-2">
-            <button
-              onClick={() => setShowEmoji(!showEmoji)}
-              className="text-xl"
-            >
-              😊
-            </button>
-
-            {showEmoji && (
-              <div className="absolute bottom-12 z-50">
-                <EmojiPicker
-                  onEmojiClick={(emojiData) =>
-                    setInputValue(
-                      (prev) => prev + emojiData.emoji
-                    )
-                  }
-                />
-              </div>
-            )}
-          </div>
-
-          {/* Input */}
-          <div className="flex gap-2 mt-auto">
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="w-full max-w-md bg-void-light rounded-xl p-8 border border-void-lighter">
+        <h1 className="text-3xl font-bold mb-6 text-center">Create your VoidAI account</h1>
+        {error && <p className="text-red-500 mb-4 text-center">{error}</p>}
+        <form onSubmit={handleRegister} className="space-y-4">
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium mb-1">
+              Email
+            </label>
             <input
-              type="text"
-              value={inputValue}
-              onChange={(e) =>
-                setInputValue(e.target.value)
-              }
-              onKeyDown={handleKeyDown}
-              placeholder="Type your message..."
-              className="input-field flex-1"
-              disabled={loading}
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="input-field w-full"
+              placeholder="you@example.com"
+              required
             />
-
-            <Button
-              onClick={handleSendMessage}
-              variant="primary"
-              disabled={loading || !inputValue.trim()}
-            >
-              {loading ? "..." : "Send"}
-            </Button>
           </div>
-        </div>
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium mb-1">
+              Password
+            </label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="input-field w-full"
+              placeholder="At least 8 characters"
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="confirm" className="block text-sm font-medium mb-1">
+              Confirm Password
+            </label>
+            <input
+              id="confirm"
+              type="password"
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
+              className="input-field w-full"
+              placeholder="Repeat your password"
+              required
+            />
+          </div>
+          <Button type="submit" disabled={loading} className="w-full" variant="primary">
+            {loading ? "Creating account..." : "Register"}
+          </Button>
+        </form>
+        <p className="mt-4 text-center text-void-text-muted">
+          Already have an account?{" "}
+          <a href="/login" className="text-void-accent hover:underline">
+            Login
+          </a>
+        </p>
       </div>
     </div>
   );
