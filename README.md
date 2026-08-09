@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="assets/banner.svg" alt="VoidAI — calm, multilingual AI workspace" width="100%">
+
 # 🌌 VoidAI
 
 **Your calm, modern, multilingual AI workspace.**
